@@ -52,7 +52,7 @@ class Segment(pygame.sprite.Sprite):
 pygame.init()
 
 # Create an 800x600 sized screen
-screen = pygame.display.set_mode([800, 600])
+screen = pygame.display.set_mode([1800, 1600])
 
 # Set the title of the window
 pygame.display.set_caption('Snake Example')
@@ -73,6 +73,8 @@ done = False
 
 while not done:
 
+    pose = pygame.mouse.get_pos()
+    print(pose)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
