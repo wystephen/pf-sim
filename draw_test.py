@@ -67,7 +67,7 @@ if __name__ == '__main__':
         tmp_beacon2.Draw(screen)
         tmp_beacon3.Draw(screen)
 
-
+        pygame.draw.rect(screen,[0,100,100],[pose[0],pose[1],10,10],10)
 
         pygame.display.flip()
 

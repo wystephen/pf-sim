@@ -28,6 +28,23 @@ class BeaconWithRange:
         self.IntPose = [1,1]
         self.IntDist = 0
 
+        self.RangeMethond = "IDEAL"
+
+    def SetRangeMethond(self,number):
+        '''
+        LIST:
+        0   -  IDEAL
+        1   -  SIMPLE_RANGE
+        :param number:
+        :return:
+        '''
+
+        if number == 0:
+            self.RangeMethond = "IDEAL"
+        elif number == 1:
+            self.RangeMethond = "SIMPLE_RANGE"
+
+
     def SetPose(self,x,y):
         self.Pose = [x,y]
         for i in range(len(self.Pose)):
@@ -44,13 +61,19 @@ class BeaconWithRange:
                            self.IntPose,
                            self.IntDist,1)
 
-    def ComputeRange(self,the_pose):
-        tmp_distance = 0.0
-        for i in range(len(self.Pose)):
-            tmp_distance += (self.Pose[i]*1.0 - the_pose[i]*1.0) ** 2.0
-        tmp_distance = tmp_distance ** 0.5
+        pygame.draw.rect(screen,[110,0,10],[self.IntPose[0]-5,self.IntPose[1]-5,10,10],10)
 
-        self.SetRange(tmp_distance)
+    def ComputeRange(self,the_pose):
+
+        if self.RangeMethond == "IDEAL":
+            tmp_distance = 0.0
+            for i in range(len(self.Pose)):
+                tmp_distance += (self.Pose[i]*1.0 - the_pose[i]*1.0) ** 2.0
+            tmp_distance = tmp_distance ** 0.5
+
+            self.SetRange(tmp_distance)
+
+
 
 
 
