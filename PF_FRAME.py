@@ -55,8 +55,9 @@ class PF_Frame:
         self.P_state += rand_pose_offset
 
     def Evaluated(self,Ranges):
-        for k in range(self.P_state.shape[1]):
-            self.Wight[k] = self.Score(Ranges,self.P_state[k,:])
+        # print("P_state_shape [0] :",self.P_state.shape[0])
+        for k in range(self.P_state.shape[0]):
+            self.Wight[k] *= self.Score(Ranges,self.P_state[k,:])
 
 
     def Score(self,Ranges,pose):
@@ -71,8 +72,17 @@ class PF_Frame:
         score = 0.0
         for i in range(self.BeaconSet.shape[0]):
             dis = np.linalg.norm(self.BeaconSet[i,:]-pose)
-            score *= self.NormPdf(Ranges[i],dis,12.0)
+            score += self.NormPdf(Ranges[i],dis,120.0)
         return score
+        #Methond 3
+        # dis = 0.0
+        # score = 0.0
+        # for i in range(self.BeaconSet.shape[0]):
+        #
+        #     dis = np.linalg.norm(self.BeaconSet[i,:]-pose)
+        #     score += (4000 - np.abs(dis-Ranges[i]))/2000
+        #     # print (dis)
+        # return score
 
 
     def NormPdf(self,x,miu,sigma):
@@ -82,33 +92,36 @@ class PF_Frame:
 
     def ReSample(self):
         self.Wight /= self.Wight.sum()
-        self.Beta = self.Wight
+        # self.Beta = self.Wight
 
-        # tmp_Wight = self.Wight
+        tmp_Wight = self.Wight
         tmp_P_state = self.P_state
 
+        # for i in range(self.P_state.shape[0]):
+        #     if i >0:
+        #         self.Beta[i] = self.Beta[i-1] + self.Wight[i]
+        #
+        # for i in range(self.P_state.shape[0]):
+        #     tmp_rnd = np.random.uniform(0.0, 1.0)
+        #
+        #     for j in range(self.P_state.shape[0]):
+        #         if tmp_rnd < self.Beta[j]:
+        #             tmp_P_state[i,:] = self.P_state[j,:]
+        #             # print("j:",j)
+        #             break
+
+        #RESAMPLE METHOND 2
         for i in range(self.P_state.shape[0]):
-            if i >0:
-                self.Beta[i] = self.Beta[i-1] + self.Wight[i]
-
-        for i in range(self.P_state.shape[0]):
-            tmp_rnd = np.random.uniform(0.0, 1.0)
-
-            for j in range(self.P_state.shape[0]):
-                if tmp_rnd < self.Beta[j]:
-                    tmp_P_state[i,:] = self.P_state[j,:]
-                    # print("j:",j)
-                    break
-
-                # if j > 999:
-                #     print("j:",j)
-
-                # print(j)
-
-        # self.Wight = np.ones_like(self.Wight)
-        # self.Wight /= self.Wight.sum()
+            tmp_rnd = np.random.uniform(0.0,1.0)
+            i_index = -1
+            while(tmp_rnd > 0.0):
+                i_index += 1
+                tmp_rnd -= self.Wight[i_index]
+            tmp_P_state[i,:] = self.P_state[i_index,:]
+            tmp_Wight[i] = self.Wight[i_index]
 
         self.P_state = tmp_P_state
+        self.Wight = tmp_Wight
 
 
     def Draw(self,screen):
@@ -117,7 +130,8 @@ class PF_Frame:
             IntPose = [0,0]
             for i in range(self.P_state.shape[1]):
                 IntPose[i] = int(self.P_state[k,i] / self.SCALEFACTOR) + self.OFFSET[i]
-            pygame.draw.circle(screen,[200,200,2],IntPose,int(self.Wight[k]/self.Wight.max()),int(self.Wight[k]/self.Wight.max()))
+            # pygame.draw.circle(screen,[200,200,2,20],IntPose,int(self.Wight[k]*self.P_state.shape[0] * 10),int(self.Wight[k]*self.P_state.shape[0] * 10))
+                pygame.draw.circle(screen,[200,200,2,20],IntPose,int(2),int(2))
             # print(k)
 
 

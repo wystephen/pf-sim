@@ -91,7 +91,11 @@ if __name__ == '__main__':
         tmp_robo.SetPose(pose)
         tmp_robo.Draw(screen)
 
-        pf.Sample(35.1)
+        pf.Sample(12.1)
+        # print("real range:" ,[tmp_beacon.GetRange(pose,0.1),
+        #               tmp_beacon2.GetRange(pose,0.1),
+        #               tmp_beacon3.GetRange(pose,0.1)])
+
         pf.Evaluated([tmp_beacon.GetRange(pose,0.1),
                       tmp_beacon2.GetRange(pose,0.1),
                       tmp_beacon3.GetRange(pose,0.1)])
