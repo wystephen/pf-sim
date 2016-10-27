@@ -4,6 +4,8 @@
 
 import pygame
 
+import numpy as np
+
 
 class BeaconWithRange:
     '''
@@ -72,6 +74,23 @@ class BeaconWithRange:
             tmp_distance = tmp_distance ** 0.5
 
             self.SetRange(tmp_distance)
+
+    def GetRange(self,the_pose,sigma):
+        if self.RangeMethond == "IDEAL":
+            tmp_distance = 0.0
+            for i in range(len(self.Pose)):
+                tmp_distance += (self.Pose[i]*1.0 - the_pose[i]*1.0) ** 2.0
+            tmp_distance = tmp_distance ** 0.5
+
+            return tmp_distance
+
+        elif self.RangeMethond == "SIMPLE_RANGE":
+            tmp_distance = 0.0
+            for i in range(len(self.Pose)):
+                tmp_distance += (self.Pose[i] * 1.0 - the_pose[i] * 1.0) ** 2.0
+            tmp_distance = tmp_distance ** 0.5
+
+            return tmp_distance + np.random.normal(0.0, sigma)
 
 
 

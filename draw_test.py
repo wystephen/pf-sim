@@ -4,7 +4,13 @@
 
 import pygame
 
+import numpy as np
+
 from Beacon import BeaconWithRange
+
+from Agent import Robo
+
+from PF_FRAME import PF_Frame
 
 if __name__ == '__main__':
     # --- Clobals ---
@@ -36,30 +42,44 @@ if __name__ == '__main__':
     tmp_beacon3 = BeaconWithRange(SCREEN_SIZE,OFFSET,ScaleFactor)
 
     tmp_beacon.SetPose(100,100)
-    tmp_beacon2.SetPose(1000,500)
-
+    tmp_beacon2.SetPose(100,800)
     tmp_beacon3.SetPose(1300,200)
 
+    tmp_robo = Robo(SCREEN_SIZE,OFFSET,ScaleFactor)
 
+    pf = PF_Frame(SCREEN_SIZE,OFFSET,ScaleFactor,1000)
+
+    BeaconSet = np.zeros([3,2])
+
+    BeaconSet[0,:] = tmp_beacon.Pose
+    BeaconSet[1,:] = tmp_beacon2.Pose
+    BeaconSet[2,:] = tmp_beacon3.Pose
+
+    pf.SetBeaconSet(BeaconSet)
+
+    pygame.mouse.set_visible(False)
 
     while not done:
         pose = pygame.mouse.get_pos()
 
-        for event  in pygame.event.get():
+        for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
 
             elif event.type == pygame.KEYDOWN:
                 print(event.key)
+                if event.key == 115:
+                    pf.InitialPose([pose[0],pose[1]])
+
+
 
 
         screen.fill(BLACK)
-        pygame.draw.circle(screen,[110,10,155],pose,20,3)
+        # pygame.draw.circle(screen,[110,10,155],pose,20,3)
 
 
         tmp_beacon.ComputeRange(pose)
         tmp_beacon2.ComputeRange(pose)
-
         tmp_beacon3.ComputeRange(pose)
 
         # tmp_beacon.SetRange(pose[1]+2)
@@ -67,7 +87,15 @@ if __name__ == '__main__':
         tmp_beacon2.Draw(screen)
         tmp_beacon3.Draw(screen)
 
-        pygame.draw.rect(screen,[0,100,100],[pose[0],pose[1],10,10],10)
+        #Robot draw
+        tmp_robo.SetPose(pose)
+        tmp_robo.Draw(screen)
+
+
+
+        pf.Draw(screen)
+
+        # pygame.draw.rect(screen,[0,100,100],[pose[0],pose[1],10,10],10)
 
         pygame.display.flip()
 
