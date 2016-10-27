@@ -68,10 +68,10 @@ class PF_Frame:
         # return 1/dis_err ** 0.5
         #Methond 2
         dis = 0.0
-        score = 1.0
+        score = 0.0
         for i in range(self.BeaconSet.shape[0]):
             dis = np.linalg.norm(self.BeaconSet[i,:]-pose)
-            score *= self.NormPdf(dis,Ranges[i],3)
+            score *= self.NormPdf(Ranges[i],dis,12.0)
         return score
 
 
@@ -84,7 +84,7 @@ class PF_Frame:
         self.Wight /= self.Wight.sum()
         self.Beta = self.Wight
 
-        tmp_Wight = self.Wight
+        # tmp_Wight = self.Wight
         tmp_P_state = self.P_state
 
         for i in range(self.P_state.shape[0]):
@@ -92,14 +92,16 @@ class PF_Frame:
                 self.Beta[i] = self.Beta[i-1] + self.Wight[i]
 
         for i in range(self.P_state.shape[0]):
-            tmp_rnd = np.random.uniform(0,1.0)
+            tmp_rnd = np.random.uniform(0.0, 1.0)
 
             for j in range(self.P_state.shape[0]):
                 if tmp_rnd < self.Beta[j]:
                     tmp_P_state[i,:] = self.P_state[j,:]
+                    # print("j:",j)
+                    break
 
-                if j > 999:
-                    print("j:",j)
+                # if j > 999:
+                #     print("j:",j)
 
                 # print(j)
 
@@ -116,5 +118,6 @@ class PF_Frame:
             for i in range(self.P_state.shape[1]):
                 IntPose[i] = int(self.P_state[k,i] / self.SCALEFACTOR) + self.OFFSET[i]
             pygame.draw.circle(screen,[200,200,2],IntPose,int(self.Wight[k]/self.Wight.max()),int(self.Wight[k]/self.Wight.max()))
+            # print(k)
 
 

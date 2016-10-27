@@ -47,7 +47,7 @@ if __name__ == '__main__':
 
     tmp_robo = Robo(SCREEN_SIZE,OFFSET,ScaleFactor)
 
-    pf = PF_Frame(SCREEN_SIZE,OFFSET,ScaleFactor,100)
+    pf = PF_Frame(SCREEN_SIZE,OFFSET,ScaleFactor,1300)
 
     BeaconSet = np.zeros([3,2])
 
@@ -91,7 +91,7 @@ if __name__ == '__main__':
         tmp_robo.SetPose(pose)
         tmp_robo.Draw(screen)
 
-        pf.Sample(50.1)
+        pf.Sample(35.1)
         pf.Evaluated([tmp_beacon.GetRange(pose,0.1),
                       tmp_beacon2.GetRange(pose,0.1),
                       tmp_beacon3.GetRange(pose,0.1)])
