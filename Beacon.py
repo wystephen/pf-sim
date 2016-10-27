@@ -82,7 +82,7 @@ class BeaconWithRange:
                 tmp_distance += (self.Pose[i]*1.0 - the_pose[i]*1.0) ** 2.0
             tmp_distance = tmp_distance ** 0.5
 
-            return tmp_distance
+            return self.SCALEFACTOR * tmp_distance
 
         elif self.RangeMethond == "SIMPLE_RANGE":
             tmp_distance = 0.0
@@ -90,7 +90,7 @@ class BeaconWithRange:
                 tmp_distance += (self.Pose[i] * 1.0 - the_pose[i] * 1.0) ** 2.0
             tmp_distance = tmp_distance ** 0.5
 
-            return tmp_distance + np.random.normal(0.0, sigma)
+            return tmp_distance * self.SCALEFACTOR + np.random.normal(0.0, sigma)
 
 
 

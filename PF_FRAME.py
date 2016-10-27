@@ -60,14 +60,53 @@ class PF_Frame:
 
 
     def Score(self,Ranges,pose):
-        dis_err = 0
-        for i in range(len(self.BeaconSet.shape[1])):
-            dis_err += np.linalg.norm(self.BeaconSet[i,:] - pose) - Ranges[i]
+        #Methond 1
+        # dis_err = 0
+        # for i in range((self.BeaconSet.shape[1])):
+        #     dis_err += (np.linalg.norm(self.BeaconSet[i,:] - pose) - Ranges[i]) ** 2.0
+        #
+        # return 1/dis_err ** 0.5
+        #Methond 2
+        dis = 0.0
+        score = 1.0
+        for i in range(self.BeaconSet.shape[0]):
+            dis = np.linalg.norm(self.BeaconSet[i,:]-pose)
+            score *= self.NormPdf(dis,Ranges[i],3)
+        return score
 
-        return dis_err ** 0.5
+
+    def NormPdf(self,x,miu,sigma):
+        para1 = 1/ np.sqrt(2.0 * np.pi) / sigma
+        para2 = - (x-miu) ** 2.0 / sigma/sigma
+        return para1 * np.exp(para2)
 
     def ReSample(self):
-        
+        self.Wight /= self.Wight.sum()
+        self.Beta = self.Wight
+
+        tmp_Wight = self.Wight
+        tmp_P_state = self.P_state
+
+        for i in range(self.P_state.shape[0]):
+            if i >0:
+                self.Beta[i] = self.Beta[i-1] + self.Wight[i]
+
+        for i in range(self.P_state.shape[0]):
+            tmp_rnd = np.random.uniform(0,1.0)
+
+            for j in range(self.P_state.shape[0]):
+                if tmp_rnd < self.Beta[j]:
+                    tmp_P_state[i,:] = self.P_state[j,:]
+
+                if j > 999:
+                    print("j:",j)
+
+                # print(j)
+
+        # self.Wight = np.ones_like(self.Wight)
+        # self.Wight /= self.Wight.sum()
+
+        self.P_state = tmp_P_state
 
 
     def Draw(self,screen):
