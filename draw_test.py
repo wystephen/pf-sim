@@ -59,8 +59,12 @@ if __name__ == '__main__':
 
     pygame.mouse.set_visible(False)
 
+    last_pose = np.zeros(2)
+
     while not done:
         pose = pygame.mouse.get_pos()
+        print("dis:",np.linalg.norm(np.asarray(pose)-last_pose))
+        last_pose = np.asarray(pose)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -91,7 +95,7 @@ if __name__ == '__main__':
         tmp_robo.SetPose(pose)
         tmp_robo.Draw(screen)
 
-        pf.Sample(12.1)
+        pf.Sample(52.1)
         # print("real range:" ,[tmp_beacon.GetRange(pose,0.1),
         #               tmp_beacon2.GetRange(pose,0.1),
         #               tmp_beacon3.GetRange(pose,0.1)])

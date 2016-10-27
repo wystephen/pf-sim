@@ -92,7 +92,7 @@ class PF_Frame:
 
     def ReSample(self):
         self.Wight /= self.Wight.sum()
-        # self.Beta = self.Wight
+        self.Beta = self.Wight
 
         tmp_Wight = self.Wight
         tmp_P_state = self.P_state
@@ -107,6 +107,7 @@ class PF_Frame:
         #     for j in range(self.P_state.shape[0]):
         #         if tmp_rnd < self.Beta[j]:
         #             tmp_P_state[i,:] = self.P_state[j,:]
+        #             tmp_Wight[i] = self.Wight[j]
         #             # print("j:",j)
         #             break
 
