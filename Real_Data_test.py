@@ -91,6 +91,9 @@ if __name__ == '__main__':
         # print("dis:",np.linalg.norm(np.asarray(pose)-last_pose))
         last_pose = np.asarray(pose)
 
+        if time_step == 0:
+            pf.InitialPose(gt[0,:])
+
         time_step += 1
         if time_step == beacon_range.shape[0]-1:
             time_step = 0
@@ -116,6 +119,7 @@ if __name__ == '__main__':
         # tmp_beacon.ComputeRange(pose)
         # tmp_beacon2.ComputeRange(pose)
         # tmp_beacon3.ComputeRange(pose)
+        print(time_step)
 
         tmp_beacon.SetRange(beacon_range[time_step,0])
         tmp_beacon2.SetRange(beacon_range[time_step,1])
@@ -138,9 +142,11 @@ if __name__ == '__main__':
         #               tmp_beacon2.GetRange(pose,0.1),
         #               tmp_beacon3.GetRange(pose,0.1)])
 
-        pf.Evaluated([tmp_beacon.GetRange([((pose[0]-OFFSET[0])*1.0/ScaleFactor),((pose[1]-OFFSET[1])*1.0/ScaleFactor)],0.1)*1.0,
-                      tmp_beacon2.GetRange([((pose[0]-OFFSET[0])*1.0/ScaleFactor),((pose[1]-OFFSET[1])*1.0/ScaleFactor)],0.1)*1.0,
-                      tmp_beacon3.GetRange([((pose[0]-OFFSET[0])*1.0/ScaleFactor),((pose[1]-OFFSET[1])*1.0/ScaleFactor)],0.1)*1.0])
+        # pf.Evaluated([tmp_beacon.GetRange([((pose[0]-OFFSET[0])*1.0/ScaleFactor),((pose[1]-OFFSET[1])*1.0/ScaleFactor)],0.1)*1.0,
+        #               tmp_beacon2.GetRange([((pose[0]-OFFSET[0])*1.0/ScaleFactor),((pose[1]-OFFSET[1])*1.0/ScaleFactor)],0.1)*1.0,
+        #               tmp_beacon3.GetRange([((pose[0]-OFFSET[0])*1.0/ScaleFactor),((pose[1]-OFFSET[1])*1.0/ScaleFactor)],0.1)*1.0])
+
+        pf.Evaluated(beacon_range[time_step,:])
 
         pf.ReSample()
         pf.Draw(screen)
