@@ -137,7 +137,7 @@ if __name__ == '__main__':
         print(gt[time_step,:])
 
 
-        pf.Sample(0.2)
+        pf.Sample(0.5)
         # print("real range:" ,[tmp_beacon.GetRange(pose,0.1),
         #               tmp_beacon2.GetRange(pose,0.1),
         #               tmp_beacon3.GetRange(pose,0.1)])
