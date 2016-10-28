@@ -91,6 +91,7 @@ class BeaconWithRange:
 
         elif self.RangeMethond == "SIMPLE_RANGE":
             tmp_distance = 0.0
+            print("range ",the_pose,sigma,self.Pose)
             for i in range(len(self.Pose)):
                 tmp_distance += (self.Pose[i] * 1.0 - the_pose[i] * 1.0) ** 2.0
             tmp_distance = tmp_distance ** 0.5

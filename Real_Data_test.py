@@ -78,7 +78,8 @@ if __name__ == '__main__':
             elif event.type == pygame.KEYDOWN:
                 print(event.key)
                 if event.key == 115:
-                    pf.InitialPose([int((pose[0]-OFFSET[0])/ScaleFactor),int((pose[1]-OFFSET[1])/ScaleFactor)])
+                    pf.InitialPose([((pose[0]-OFFSET[0])*1.0/ScaleFactor),((pose[1]-OFFSET[1])*1.0/ScaleFactor)])
+                    print("test pose:",[((pose[0]-OFFSET[0])*1.0/ScaleFactor),((pose[1]-OFFSET[1])*1.0/ScaleFactor)])
 
 
 
@@ -102,14 +103,14 @@ if __name__ == '__main__':
         tmp_robo.SetPose(pose)
         tmp_robo.Draw(screen)
 
-        pf.Sample(52.1)
+        pf.Sample(0.2)
         # print("real range:" ,[tmp_beacon.GetRange(pose,0.1),
         #               tmp_beacon2.GetRange(pose,0.1),
         #               tmp_beacon3.GetRange(pose,0.1)])
 
-        pf.Evaluated([tmp_beacon.GetRange([int((pose[0]-OFFSET[0])/ScaleFactor),int((pose[1]-OFFSET[1])/ScaleFactor)],21)*1.0,
-                      tmp_beacon2.GetRange([int((pose[0]-OFFSET[0])/ScaleFactor),int((pose[1]-OFFSET[1])/ScaleFactor)],21)*1.0,
-                      tmp_beacon3.GetRange([int((pose[0]-OFFSET[0])/ScaleFactor),int((pose[1]-OFFSET[1])/ScaleFactor)],21)*1.0])
+        pf.Evaluated([tmp_beacon.GetRange([((pose[0]-OFFSET[0])*1.0/ScaleFactor),((pose[1]-OFFSET[1])*1.0/ScaleFactor)],0.1)*1.0,
+                      tmp_beacon2.GetRange([((pose[0]-OFFSET[0])*1.0/ScaleFactor),((pose[1]-OFFSET[1])*1.0/ScaleFactor)],0.1)*1.0,
+                      tmp_beacon3.GetRange([((pose[0]-OFFSET[0])*1.0/ScaleFactor),((pose[1]-OFFSET[1])*1.0/ScaleFactor)],0.1)*1.0])
 
         pf.ReSample()
         pf.Draw(screen)

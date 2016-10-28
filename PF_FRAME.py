@@ -54,6 +54,7 @@ class PF_Frame:
 
     def Evaluated(self,Ranges):
         # print("P_state_shape [0] :",self.P_state.shape[0])
+        # print("Ranges:",Ranges)
         for k in range(self.P_state.shape[0]):
             self.Wight[k] *= self.Score(Ranges,self.P_state[k,:])
 
@@ -111,11 +112,13 @@ class PF_Frame:
 
         #RESAMPLE METHOND 2
         for i in range(self.P_state.shape[0]):
-            tmp_rnd = np.random.uniform(0.0,0.99999999)
+            tmp_rnd = np.random.uniform(0.0,self.Wight.sum())
             i_index = -1
             while(tmp_rnd > 0.0):
                 i_index += 1
                 tmp_rnd -= self.Wight[i_index]
+                # if i_index == self.P_state.shape[0] - 1:
+                    # i_index =int( (np.random.uniform(0.0,0.9999)) * self.P_state.shape[0])
             tmp_P_state[i,:] = self.P_state[i_index,:]
             tmp_Wight[i] = self.Wight[i_index]
 
