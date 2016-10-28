@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
     SCREEN_SIZE=[1680,980]
 
-    OFFSET = [200,200] # piexels
+    OFFSET = [300,300] # piexels
 
     ScaleFactor = 100.0 #Real(m) to piexels
 
@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
     screen = pygame.display.set_mode(SCREEN_SIZE)
 
-    pygame.display.set_caption("Test All")
+    pygame.display.set_caption("Real Test.")
 
     allspriteslit = pygame.sprite.Group()
 
@@ -82,7 +82,6 @@ if __name__ == '__main__':
 
 
 
-
         screen.fill(BLACK)
         # pygame.draw.circle(screen,[110,10,155],pose,20,3)
 
@@ -108,9 +107,9 @@ if __name__ == '__main__':
         #               tmp_beacon2.GetRange(pose,0.1),
         #               tmp_beacon3.GetRange(pose,0.1)])
 
-        pf.Evaluated([tmp_beacon.GetRange(pose,21),
-                      tmp_beacon2.GetRange(pose,21),
-                      tmp_beacon3.GetRange(pose,21)])
+        pf.Evaluated([tmp_beacon.GetRange([int((pose[0]-OFFSET[0])/ScaleFactor),int((pose[1]-OFFSET[1])/ScaleFactor)],21)*1.0,
+                      tmp_beacon2.GetRange([int((pose[0]-OFFSET[0])/ScaleFactor),int((pose[1]-OFFSET[1])/ScaleFactor)],21)*1.0,
+                      tmp_beacon3.GetRange([int((pose[0]-OFFSET[0])/ScaleFactor),int((pose[1]-OFFSET[1])/ScaleFactor)],21)*1.0])
 
         pf.ReSample()
         pf.Draw(screen)
@@ -123,4 +122,7 @@ if __name__ == '__main__':
 
     pygame.quit()
 
+'''
+kkk,ikomtg inum,onkkkkkkuiiiiiiiiiiiibu[[i.n m iooojjjknmunumkkkkkkllllkkkdd
+'''
 
