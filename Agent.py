@@ -28,7 +28,7 @@ class Robo:
 
         for i in range(len(self.Pose)):
             self.Pose[i] = pose[i] #* self.SCALEFACTOR
-            self.IntPose[i] = int(self.Pose[i] )
+            self.IntPose[i] = int(self.Pose[i]*self.SCALEFACTOR +self.OFFSET[i] )
 
     def Draw(self,screen):
         '''

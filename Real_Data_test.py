@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
     OFFSET = [300,300] # piexels
 
-    ScaleFactor = 100.0 #Real(m) to piexels
+    ScaleFactor = 80.0 #Real(m) to piexels
 
 
     pygame.init()
@@ -45,6 +45,26 @@ if __name__ == '__main__':
     tmp_beacon.SetPose(beaconpose[0,0],beaconpose[0,1])
     tmp_beacon2.SetPose(beaconpose[1,0],beaconpose[1,1])
     tmp_beacon3.SetPose(beaconpose[2,0],beaconpose[2,1])
+
+    # Data Load
+    beacon_range = np.loadtxt("beacon_out.txt")
+    gt = np.loadtxt("gt.csv",delimiter=",")
+
+
+    time_step = 0
+    # Data preprocess 1:3d to 2d
+    z_offset = beaconpose[:,2] - 1.12
+    z_offset = z_offset
+
+    z_offset.reshape([1,3])
+    beacon_range = beacon_range[:,3:6]
+    beacon_range = beacon_range**2.0 - z_offset **2.0
+    beacon_range = beacon_range ** 0.5
+
+    print("bea range",beacon_range)
+
+    # Data preprocess 2:gt cut
+    gt = gt[:,0:2]
 
     tmp_beacon.SetRangeMethond(1)
     tmp_beacon2.SetRangeMethond(1)
@@ -71,6 +91,9 @@ if __name__ == '__main__':
         # print("dis:",np.linalg.norm(np.asarray(pose)-last_pose))
         last_pose = np.asarray(pose)
 
+        time_step += 1
+        if time_step == beacon_range.shape[0]-1:
+            time_step = 0
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
@@ -79,7 +102,7 @@ if __name__ == '__main__':
                 print(event.key)
                 if event.key == 115:
                     pf.InitialPose([((pose[0]-OFFSET[0])*1.0/ScaleFactor),((pose[1]-OFFSET[1])*1.0/ScaleFactor)])
-                    print("test pose:",[((pose[0]-OFFSET[0])*1.0/ScaleFactor),((pose[1]-OFFSET[1])*1.0/ScaleFactor)])
+                    # print("test pose:",[((pose[0]-OFFSET[0])*1.0/ScaleFactor),((pose[1]-OFFSET[1])*1.0/ScaleFactor)])
 
 
 
@@ -90,9 +113,13 @@ if __name__ == '__main__':
         # for i in range(len(pose)):
         #     tmp_pose[i] = (pose[i] - OFFSET[i])/ScaleFactor
         # pose = tmp_pose
-        tmp_beacon.ComputeRange(pose)
-        tmp_beacon2.ComputeRange(pose)
-        tmp_beacon3.ComputeRange(pose)
+        # tmp_beacon.ComputeRange(pose)
+        # tmp_beacon2.ComputeRange(pose)
+        # tmp_beacon3.ComputeRange(pose)
+
+        tmp_beacon.SetRange(beacon_range[time_step,0])
+        tmp_beacon2.SetRange(beacon_range[time_step,1])
+        tmp_beacon3.SetRange(beacon_range[time_step,2])
 
         # tmp_beacon.SetRange(pose[1]+2)
         tmp_beacon.Draw(screen)
@@ -100,8 +127,11 @@ if __name__ == '__main__':
         tmp_beacon3.Draw(screen)
 
         #Robot draw
-        tmp_robo.SetPose(pose)
+        # tmp_robo.SetPose(pose)
+        tmp_robo.SetPose(gt[time_step,:])
         tmp_robo.Draw(screen)
+        print(gt[time_step,:])
+
 
         pf.Sample(0.2)
         # print("real range:" ,[tmp_beacon.GetRange(pose,0.1),
