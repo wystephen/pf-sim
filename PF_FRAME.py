@@ -38,11 +38,9 @@ class PF_Frame:
     def InitialPose(self,pose):
         for i in range(len(pose)):
 
-            self.Pose[i] = float(pose[i])\
-                           * 1.0 *\
-                           self.SCALEFACTOR
+            self.Pose[i] = pose[i]
 
-            self.IntPose[i] = int(self.Pose[i] * 1.0 / self.SCALEFACTOR) + self.OFFSET[i]
+            self.IntPose[i] = int(self.Pose[i] * 1.0 * self.SCALEFACTOR) + self.OFFSET[i]
 
         for k in range(self.P_state.shape[0]):
             self.P_state[k,:] = self.Pose
@@ -72,7 +70,7 @@ class PF_Frame:
         score = 0.0
         for i in range(self.BeaconSet.shape[0]):
             dis = np.linalg.norm(self.BeaconSet[i,:]-pose)
-            score += self.NormPdf(Ranges[i],dis,120.0)
+            score += self.NormPdf(Ranges[i],dis,80.0)
         return score
         #Methond 3
         # dis = 0.0
@@ -113,7 +111,7 @@ class PF_Frame:
 
         #RESAMPLE METHOND 2
         for i in range(self.P_state.shape[0]):
-            tmp_rnd = np.random.uniform(0.0,1.0)
+            tmp_rnd = np.random.uniform(0.0,0.99999999)
             i_index = -1
             while(tmp_rnd > 0.0):
                 i_index += 1
@@ -130,7 +128,7 @@ class PF_Frame:
         for k in range(self.P_state.shape[0]):
             IntPose = [0,0]
             for i in range(self.P_state.shape[1]):
-                IntPose[i] = int(self.P_state[k,i] / self.SCALEFACTOR) + self.OFFSET[i]
+                IntPose[i] = int(self.P_state[k,i] * self.SCALEFACTOR) + self.OFFSET[i]
             # pygame.draw.circle(screen,[200,200,2,20],IntPose,int(self.Wight[k]*self.P_state.shape[0] * 10),int(self.Wight[k]*self.P_state.shape[0] * 10))
                 pygame.draw.circle(screen,[200,200,2,20],IntPose,int(2),int(2))
             # print(k)

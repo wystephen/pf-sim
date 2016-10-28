@@ -50,30 +50,35 @@ class BeaconWithRange:
     def SetPose(self,x,y):
         self.Pose = [x,y]
         for i in range(len(self.Pose)):
-            self.IntPose[i] = int(self.Pose[i]*1.0/self.SCALEFACTOR) + self.OFFSET[i]
+            self.IntPose[i] = int(self.Pose[i]*1.0 *self.SCALEFACTOR) + self.OFFSET[i]
 
 
     def SetRange(self,distance):
         self.Dist = distance
-        self.IntDist = int(distance * 1.0 / self.SCALEFACTOR)
+        self.IntDist = int(distance * 1.0 * self.SCALEFACTOR)
 
     def Draw(self,screen):
         pygame.draw.circle(screen,
                            [0,22,211],
                            self.IntPose,
-                           self.IntDist,1)
+                           self.IntDist+1,1)
 
         pygame.draw.rect(screen,[110,0,10],[self.IntPose[0]-5,self.IntPose[1]-5,10,10],10)
 
     def ComputeRange(self,the_pose):
+        # tmp_pose =np.asarray(the_pose)
+        # the_pose = tmp_pose
+        # for i in range(len(the_pose)):
+        #     print("tmp:",tmp_pose,type(tmp_pose),tmp_pose[i])
+        #     the_pose[i] = int(tmp_pose[i] * self.SCALEFACTOR) + self.OFFSET[i]
 
-        if self.RangeMethond == "IDEAL":
-            tmp_distance = 0.0
-            for i in range(len(self.Pose)):
-                tmp_distance += (self.Pose[i]*1.0 - the_pose[i]*1.0) ** 2.0
-            tmp_distance = tmp_distance ** 0.5
+        tmp_distance = 0.0
+        for i in range(len(self.Pose)):
+            tmp_distance += (self.IntPose[i]*1.0 - the_pose[i]*1.0) ** 2.0
+        tmp_distance = tmp_distance ** 0.5
 
-            self.SetRange(tmp_distance)
+        self.Dist = tmp_distance * 1.0 / self.SCALEFACTOR
+        self.IntDist = int(tmp_distance)
 
     def GetRange(self,the_pose,sigma):
         if self.RangeMethond == "IDEAL":
@@ -90,7 +95,7 @@ class BeaconWithRange:
                 tmp_distance += (self.Pose[i] * 1.0 - the_pose[i] * 1.0) ** 2.0
             tmp_distance = tmp_distance ** 0.5
 
-            return tmp_distance * self.SCALEFACTOR + np.random.normal(0.0, sigma)
+            return tmp_distance / self.SCALEFACTOR + np.random.normal(0.0, sigma)
 
 
 

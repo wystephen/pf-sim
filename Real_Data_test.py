@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
-# carete by steve at  2016 / 10 / 26　16:50
-
+# Create by steve in 16-10-28 at 上午8:56
 
 import pygame
 
@@ -21,9 +20,9 @@ if __name__ == '__main__':
 
     SCREEN_SIZE=[1680,980]
 
-    OFFSET = [10,10] # piexels
+    OFFSET = [200,200] # piexels
 
-    ScaleFactor = 1.0 #Real(m) to piexels
+    ScaleFactor = 100.0 #Real(m) to piexels
 
 
     pygame.init()
@@ -41,9 +40,11 @@ if __name__ == '__main__':
     tmp_beacon2 = BeaconWithRange(SCREEN_SIZE,OFFSET,ScaleFactor)
     tmp_beacon3 = BeaconWithRange(SCREEN_SIZE,OFFSET,ScaleFactor)
 
-    tmp_beacon.SetPose(500,600)
-    tmp_beacon2.SetPose(500,800)
-    tmp_beacon3.SetPose(1300,900)
+    beaconpose = np.loadtxt("beacon_set.csv",delimiter=",")
+    print(beaconpose)
+    tmp_beacon.SetPose(beaconpose[0,0],beaconpose[0,1])
+    tmp_beacon2.SetPose(beaconpose[1,0],beaconpose[1,1])
+    tmp_beacon3.SetPose(beaconpose[2,0],beaconpose[2,1])
 
     tmp_beacon.SetRangeMethond(1)
     tmp_beacon2.SetRangeMethond(1)
@@ -67,7 +68,7 @@ if __name__ == '__main__':
 
     while not done:
         pose = pygame.mouse.get_pos()
-        print("dis:",np.linalg.norm(np.asarray(pose)-last_pose))
+        # print("dis:",np.linalg.norm(np.asarray(pose)-last_pose))
         last_pose = np.asarray(pose)
 
         for event in pygame.event.get():
@@ -77,7 +78,7 @@ if __name__ == '__main__':
             elif event.type == pygame.KEYDOWN:
                 print(event.key)
                 if event.key == 115:
-                    pf.InitialPose([pose[0],pose[1]])
+                    pf.InitialPose([int((pose[0]-OFFSET[0])/ScaleFactor),int((pose[1]-OFFSET[1])/ScaleFactor)])
 
 
 
@@ -85,7 +86,10 @@ if __name__ == '__main__':
         screen.fill(BLACK)
         # pygame.draw.circle(screen,[110,10,155],pose,20,3)
 
-
+        # tmp_pose = np.asarray(pose)
+        # for i in range(len(pose)):
+        #     tmp_pose[i] = (pose[i] - OFFSET[i])/ScaleFactor
+        # pose = tmp_pose
         tmp_beacon.ComputeRange(pose)
         tmp_beacon2.ComputeRange(pose)
         tmp_beacon3.ComputeRange(pose)
