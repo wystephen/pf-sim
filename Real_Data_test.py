@@ -52,6 +52,8 @@ if __name__ == '__main__':
     beacon_range = np.loadtxt("beacon_out.txt")
     gt = np.loadtxt("gt.csv",delimiter=",")
 
+    # gt=np.zeros_like(gt)
+
 
     time_step = 0
     '''
@@ -113,10 +115,10 @@ if __name__ == '__main__':
         time_step += 1
         if time_step == beacon_range.shape[0]-1:
             print("AVE ERR:",err.mean())
-            plt.figure(1)
-            plt.grid(True)
-            plt.plot(err,"-+r")
-            plt.show()
+            # plt.figure(1)
+            # plt.grid(True)
+            # plt.plot(err,"-+r")
+            # plt.show()
             err = np.zeros_like(err)
             time_step = 0
 
