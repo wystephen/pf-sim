@@ -112,6 +112,7 @@ if __name__ == '__main__':
 
         time_step += 1
         if time_step == beacon_range.shape[0]-1:
+            print("AVE ERR:",err.mean())
             plt.figure(1)
             plt.grid(True)
             plt.plot(err,"-+r")
@@ -176,10 +177,10 @@ if __name__ == '__main__':
 
         result = pf.GetResult()
 
-        print("RESULAT:",result)
-        print(result.shape,gt[time_step,:].shape)
-        print(result-gt[time_step,:])
-        print(err.shape)
+        # print("RESULAT:",result)
+        # print(result.shape,gt[time_step,:].shape)
+        # print(result-gt[time_step,:])
+        # print(err.shape)
 
         err[time_step] = np.linalg.norm(result-gt[time_step,:])
 
