@@ -125,6 +125,13 @@ class PF_Frame:
         self.P_state = tmp_P_state
         self.Wight = tmp_Wight
 
+    def GetResult(self):
+        self.Wight /= self.Wight.sum()
+        tmp_result = np.zeros(self.P_state.shape[1])
+        for i in range(self.Wight.shape[0]):
+            tmp_result += self.P_state[i,:] * self.Wight[i]
+        self.EstimatePose = tmp_result
+        return tmp_result
 
     def Draw(self,screen):
 
@@ -133,7 +140,13 @@ class PF_Frame:
             for i in range(self.P_state.shape[1]):
                 IntPose[i] = int(self.P_state[k,i] * self.SCALEFACTOR) + self.OFFSET[i]
             # pygame.draw.circle(screen,[200,200,2,20],IntPose,int(self.Wight[k]*self.P_state.shape[0] * 10),int(self.Wight[k]*self.P_state.shape[0] * 10))
-                pygame.draw.circle(screen,[200,200,2,20],IntPose,int(2),int(2))
+            pygame.draw.circle(screen,[200,200,2,20],IntPose,int(2),int(2))
             # print(k)
+        IntPose = [0,0]
+
+        for i in range(self.P_state.shape[1]):
+            IntPose[i] = int(self.EstimatePose[i] * self.SCALEFACTOR) + self.OFFSET[i]
+
+        pygame.draw.circle(screen,[0,210,20,30],IntPose,int(5),int(5))
 
 
