@@ -149,4 +149,20 @@ class PF_Frame:
 
         pygame.draw.circle(screen,[0,210,20,30],IntPose,int(5),int(5))
 
+    def DrawLikeliHood(self,screen,Ranges,RECT_POSE):
+
+        print("Beging")
+        pixObj = pygame.PixelArray(screen)
+
+        for i in range(RECT_POSE[0],RECT_POSE[1]):
+            for j in range(RECT_POSE[2],RECT_POSE[3]):
+                score = self.Score(Ranges,(np.asarray([i,j])-np.asarray(self.OFFSET))*1.0/self.SCALEFACTOR)
+                score = int(score / 3.0 * 255.0)
+                pixObj[i][j] = (score,score,score)
+                # i += 20
+                # j += 20
+                if i >= RECT_POSE[1] or j >= RECT_POSE[3]:
+                    break
+        del pixObj
+
 

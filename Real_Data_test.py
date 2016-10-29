@@ -136,7 +136,7 @@ if __name__ == '__main__':
 
         screen.fill(BLACK)
         # pygame.draw.circle(screen,[110,10,155],pose,20,3)
-
+        pf.DrawLikeliHood(screen,beacon_range[time_step,:],[pose[0]-100,pose[0]+100,pose[1]-100,pose[1]+100])
         # tmp_pose = np.asarray(pose)
         # for i in range(len(pose)):
         #     tmp_pose[i] = (pose[i] - OFFSET[i])/ScaleFactor
@@ -188,6 +188,8 @@ if __name__ == '__main__':
 
 
         pf.Draw(screen)
+
+
 
 
 
