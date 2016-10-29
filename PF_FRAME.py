@@ -151,7 +151,7 @@ class PF_Frame:
 
     def DrawLikeliHood(self,screen,Ranges,RECT_POSE):
 
-        print("Beging")
+        # print("Beging")
         pixObj = pygame.PixelArray(screen)
 
         for i in range(RECT_POSE[0],RECT_POSE[1]):

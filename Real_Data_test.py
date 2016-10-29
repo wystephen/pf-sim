@@ -101,6 +101,7 @@ if __name__ == '__main__':
     pf.SetBeaconSet(BeaconSet)
 
     pygame.mouse.set_visible(False)
+    pygame.mouse.set_visible(True)
 
     last_pose = np.zeros(2)
 
@@ -136,7 +137,12 @@ if __name__ == '__main__':
 
         screen.fill(BLACK)
         # pygame.draw.circle(screen,[110,10,155],pose,20,3)
-        pf.DrawLikeliHood(screen,beacon_range[time_step,:],[pose[0]-100,pose[0]+100,pose[1]-100,pose[1]+100])
+        '''
+        Draw likelihood distribution.
+        '''
+        # pf.DrawLikeliHood(screen,beacon_range[time_step,:],[pose[0]-100,pose[0]+100,pose[1]-100,pose[1]+100])
+
+
         # tmp_pose = np.asarray(pose)
         # for i in range(len(pose)):
         #     tmp_pose[i] = (pose[i] - OFFSET[i])/ScaleFactor
@@ -186,18 +192,14 @@ if __name__ == '__main__':
 
         err[time_step] = np.linalg.norm(result-gt[time_step,:])
 
-
         pf.Draw(screen)
-
-
-
 
 
         # pygame.draw.rect(screen,[0,100,100],[pose[0],pose[1],10,10],10)
 
         pygame.display.flip()
 
-        # clock.tick(1)
+        clock.tick(100)
 
     pygame.quit()
 
