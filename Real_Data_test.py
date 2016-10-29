@@ -120,7 +120,8 @@ if __name__ == '__main__':
         # tmp_beacon2.ComputeRange(pose)
         # tmp_beacon3.ComputeRange(pose)
         print(time_step)
-
+        print(gt[time_step,:])
+        print(beacon_range[time_step,:])
         tmp_beacon.SetRange(beacon_range[time_step,0])
         tmp_beacon2.SetRange(beacon_range[time_step,1])
         tmp_beacon3.SetRange(beacon_range[time_step,2])
@@ -134,7 +135,7 @@ if __name__ == '__main__':
         # tmp_robo.SetPose(pose)
         tmp_robo.SetPose(gt[time_step,:])
         tmp_robo.Draw(screen)
-        print(gt[time_step,:])
+
 
 
         pf.Sample(0.5)
