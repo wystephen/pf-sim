@@ -71,7 +71,7 @@ class PF_Frame:
         score = 0.0
         for i in range(self.BeaconSet.shape[0]):
             dis = np.linalg.norm(self.BeaconSet[i,:]-pose)
-            score += self.NormPdf(Ranges[i],dis,1.0)
+            score += (self.NormPdf(Ranges[i],dis,1.0)+1e-50)
         return score
         #Methond 3
         # dis = 0.0
@@ -164,5 +164,7 @@ class PF_Frame:
                 if i >= RECT_POSE[1] or j >= RECT_POSE[3]:
                     break
         del pixObj
+
+
 
 

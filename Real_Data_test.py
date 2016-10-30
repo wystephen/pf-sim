@@ -192,7 +192,11 @@ if __name__ == '__main__':
 
         err[time_step] = np.linalg.norm(result-gt[time_step,:])
 
+
         pf.Draw(screen)
+
+
+
 
 
         # pygame.draw.rect(screen,[0,100,100],[pose[0],pose[1],10,10],10)
