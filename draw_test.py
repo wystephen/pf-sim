@@ -65,6 +65,7 @@ if __name__ == '__main__':
 
     last_pose = np.zeros(2)
 
+    IsStop = False
     while not done:
         pose = pygame.mouse.get_pos()
         print("dis:",np.linalg.norm(np.asarray(pose)-last_pose))
@@ -78,6 +79,9 @@ if __name__ == '__main__':
                 print(event.key)
                 if event.key == 115:
                     pf.InitialPose([pose[0],pose[1]])
+                    # IsStop = not IsStop
+        if IsStop:
+            continue
 
 
 
