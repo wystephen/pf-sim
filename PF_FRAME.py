@@ -32,6 +32,8 @@ class PF_Frame:
 
         self.BeaconSet = np.zeros([3,2])
 
+        self.path = list()
+
     def SetBeaconSet(self,beaconset):
         self.BeaconSet = beaconset
 
@@ -146,6 +148,12 @@ class PF_Frame:
 
         for i in range(self.P_state.shape[1]):
             IntPose[i] = int(self.EstimatePose[i] * self.SCALEFACTOR) + self.OFFSET[i]
+        self.path.append([IntPose[0],IntPose[1]])
+        if len(self.path)>20:
+            self.path.pop(0)
+        if len(self.path)>2:
+            # print(self.path)
+            pygame.draw.lines(screen,[100,210,100],False,self.path,3)
 
         pygame.draw.circle(screen,[0,210,20,30],IntPose,int(5),int(5))
 
