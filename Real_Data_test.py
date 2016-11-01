@@ -105,6 +105,8 @@ if __name__ == '__main__':
 
     last_pose = np.zeros(2)
 
+    IsPause = False
+
     while not done:
         pose = pygame.mouse.get_pos()
         # print("dis:",np.linalg.norm(np.asarray(pose)-last_pose))
@@ -112,8 +114,8 @@ if __name__ == '__main__':
 
         if time_step == 0:
             pf.InitialPose(gt[0,:])
-
-        time_step += 1
+        if not IsPause:
+            time_step += 1
         if time_step == beacon_range.shape[0]-1:
             print("AVE ERR:",err.mean())
             # plt.figure(1)
@@ -133,7 +135,10 @@ if __name__ == '__main__':
                     pf.InitialPose([((pose[0]-OFFSET[0])*1.0/ScaleFactor),((pose[1]-OFFSET[1])*1.0/ScaleFactor)])
                     # print("test pose:",[((pose[0]-OFFSET[0])*1.0/ScaleFactor),((pose[1]-OFFSET[1])*1.0/ScaleFactor)])
 
-
+                elif event.key == 100:
+                    IsPause = not IsPause
+        if IsPause:
+            continue
 
         screen.fill(BLACK)
         # pygame.draw.circle(screen,[110,10,155],pose,20,3)
